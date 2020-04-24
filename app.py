@@ -1,37 +1,16 @@
-from Ancalagon import App, Route
+from Ancalagon import App
+from Ancalagon.responses import JSONResponse, Response
 
 
-async def unnamed_hello(request):
-    return 'Hello mfucker'
+async def hello(request):
+    return JSONResponse({'name': 'Melkor'})
 
 
-async def named_hello(request):
-    return 'Hello my dear friend ' + request.json['name']
+async def world(request):
+    payload = await request.json()
+    return Response(f'<h1>Your JSON: </h1> {payload}')
 
 
-app = App()
-app.route(Route('/hello-anon', unnamed_hello))
-app.route(Route('/hello-user', named_hello, ['POST']))
-
-"""
-╭─ on master +5 !1
-╰─ ~/dev/Ancalagon ❯ http :8000/hello-anon
-HTTP/1.1 200 OK
-content-type: text/plain
-date: Thu, 23 Apr 2020 23:07:12 GMT
-server: uvicorn
-transfer-encoding: chunked
-
-Hello mfucker
-
-╭─ on master +5 !1
-╰─ ~/dev/Ancalagon ❯ http :8000/hello-user name=Abu
-HTTP/1.1 200 OK
-content-type: text/plain
-date: Thu, 23 Apr 2020 23:07:30 GMT
-server: uvicorn
-transfer-encoding: chunked
-
-Hello my dear friend Abu
-
-"""
+app = App(debug=True)
+app.route('/', hello)
+app.route('/echo', world, ['POST'])
