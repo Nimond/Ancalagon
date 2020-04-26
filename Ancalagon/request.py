@@ -4,12 +4,9 @@ import json
 class Request:
     def __init__(self, scope, receive, send):
         scope['request'] = self
-
         self._scope = scope
         self._receive = receive
         self._send = send
-
-        self.method = scope['method']
 
     async def body(self):
         chunks = []

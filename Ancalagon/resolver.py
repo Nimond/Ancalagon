@@ -1,3 +1,5 @@
+from functools import partial
+
 from collections import defaultdict
 from .responses import Response
 from .request import Request
@@ -9,12 +11,20 @@ class Resolver:
 
     async def __call__(self, scope, receive, send):
         scope['request'] = request = Request(scope, receive, send)
-        path = scope['path']
-        method = scope['method']
+
+        request.app = app = scope.get('app')
+        request.path = path = scope['path']
+        request.method = method = scope['method']
 
         for route in self.routes.get(method, []) + self.routes.get('*', []):
             if route.path == path:
-                response = await route.handler(request)
+                handler = route.handler
+                for middleware in app.middlewares[::-1] + route.middlewares:
+                    if middleware not in route.ignore_middlewares:
+                        handler = partial(middleware, handler)
+
+                response = await handler(request)
+
                 break
         else:
             response = Response('<h1>404 Not found</h1>', 404)

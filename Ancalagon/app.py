@@ -4,16 +4,17 @@ from .utils import run_func, prettyformat
 
 
 class App:
-    def __init__(self, debug=False, startup=[], shutdown=[]):
+    def __init__(self, debug=False, startup=[], shutdown=[], middlewares=[]):
         self.debug = debug
         self.http = Resolver()
         self.startup = startup
         self.shutdown = shutdown
+        self.middlewares = middlewares
 
     async def __call__(self, scope, receive, send):
-        print(prettyformat(scope))
+        print(prettyformat(scope)) if self.debug else None
 
-        # TODO: middlewares
+        # TODO: ASGI middlewares
         scope['app'] = self
 
         if scope['type'] == 'lifespan':
@@ -25,17 +26,15 @@ class App:
         while True:
             message = await receive()
             if message['type'] == 'lifespan.startup':
-                print('Dragon: lifespan:start')
                 for func in self.startup:
-                    await run_func(func, scope['app'])
+                    await run_func(func, self)
                 await send({'type': 'lifespan.startup.complete'})
 
             elif message['type'] == 'lifespan.shutdown':
-                print('Dragon: lifespan:shutdown')
                 for func in self.shutdown:
-                    await run_func(func)
+                    await run_func(func, self)
                 await send({'type': 'lifespan.shutdown.complete'})
                 return
 
-    def route(self, path, handler, methods=['GET']):
-        self.http.add_route(Route(path, handler, methods))
+    def route(self, *args, **kwargs):
+        self.http.add_route(Route(*args, **kwargs))
