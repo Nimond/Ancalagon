@@ -1,6 +1,6 @@
 # Ancalagon - The blackest ASGI web framework  
-<a href="https://lotr.fandom.com/wiki/Ancalagon"><img src="https://i.ibb.co/Bc01XKz/1.png" width=900 height=300></a>
-
+<a href="https://lotr.fandom.com/wiki/Ancalagon"><img src="https://i.ibb.co/Bc01XKz/1.png" width=900 height=300></a>  
+`pip install Ancalagon`  
 [logo]: https://i.ibb.co/Bc01XKz/1.png "Logo"
 
 *Inspired by:*  
