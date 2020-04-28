@@ -2,6 +2,8 @@ from .resolver import Resolver
 from .routes import Route
 from .utils import run_func, prettyformat
 
+import logging
+
 
 class App:
     def __init__(self, debug=False, startup=[], shutdown=[], middlewares=[]):
@@ -11,8 +13,11 @@ class App:
         self.shutdown = shutdown
         self.middlewares = middlewares
 
+        self.logger = logging.getLogger('simple_example')
+        self.logger.setLevel(logging.DEBUG if debug else logging.WARNING)
+
     async def __call__(self, scope, receive, send):
-        print(prettyformat(scope)) if self.debug else None
+        self.logger.debug(prettyformat(scope))
 
         # TODO: ASGI middlewares
         scope['app'] = self
