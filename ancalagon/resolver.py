@@ -12,9 +12,9 @@ class Resolver:
     async def __call__(self, scope, receive, send):
         scope['request'] = request = Request(scope, receive, send)
 
-        request.app = app = scope.get('app')
-        request.path = path = scope['path']
-        request.method = method = scope['method']
+        app = scope['app']
+        path = scope['path']
+        method = scope['method']
 
         for route in self.routes.get(method, []) + self.routes.get('*', []):
             if route.path == path:

@@ -1,7 +1,7 @@
 from json import JSONDecodeError
 
-from Ancalagon import App
-from Ancalagon.responses import JSONResponse, Response
+from ancalagon import App
+from ancalagon.responses import JSONResponse, Response
 
 
 async def info_middleware(handler, request):
