@@ -1,6 +1,6 @@
 class URL:
     def __init__(self, _scope):
-        self.sheme = _scope['sheme']
+        self.scheme = _scope['scheme']
         self.host = _scope['server'][0]
         self.port = _scope['server'][1]
         self.path = _scope['path']
