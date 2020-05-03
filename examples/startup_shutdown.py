@@ -1,5 +1,5 @@
-from Ancalagon import App
-from Ancalagon.responses import JSONResponse
+from ancalagon import App
+from ancalagon.responses import JSONResponse
 
 
 async def hello(request):
