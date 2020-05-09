@@ -1,4 +1,5 @@
 import json
+
 from multidict import CIMultiDict, MultiDict
 
 from .url import URL
@@ -13,41 +14,36 @@ class Request:
         self._url = URL(scope)
 
     async def body(self):
-        if hasattr(self, '_body'):
-            return self._body
-        else:
+        if not hasattr(self, '_body'):
             chunks = []
             while True:
-                receive = await self._receive()
-                chunks.append(receive['body'])
-                if not receive.get('more_body'):
+                response = await self._receive()
+                chunks.append(response['body'])
+                if not response.get('more_body'):
                     break
 
             self._body = b''.join(chunks)
-            return self._body
+
+        return self._body
 
     async def json(self):
-        if hasattr(self, '_json'):
-            return self._json
-        else:
-            self._json = json.loads(await self.body())  # TODO: in executor
-            return self._json
+        if not hasattr(self, '_json'):
+            self._json = json.loads(await self.body())  # FIXME: in executor
+
+        return self._json
 
     @property
     def headers(self):
         if hasattr(self, '_headers'):
-            return self._headers
-        else:
             self._headers = CIMultiDict(
                 {h[0].decode(): h[1].decode() for h in self._scope['headers']}
             )
-            return self._headers
+
+        return self._headers
 
     @property
     def query(self):
         if hasattr(self, '_query'):
-            return self._query
-        else:
             query_string = self._scope.get('query_string').decode()
             self._query = MultiDict(
                 {
@@ -55,7 +51,8 @@ class Request:
                     for q in query_string.split('&')
                 }
             )
-            return self._query
+
+        return self._query
 
     @property
     def path_params(self):

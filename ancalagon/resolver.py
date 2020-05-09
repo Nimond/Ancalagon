@@ -1,8 +1,8 @@
+from collections import defaultdict
 from functools import partial
 
-from collections import defaultdict
-from .responses import Response
 from .request import Request
+from .responses import Response
 
 
 class Resolver:

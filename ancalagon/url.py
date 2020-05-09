@@ -6,7 +6,7 @@ class URL:
         self.path = _scope['path']
 
     def __str__(self):
-        return f'{self.sheme}://{self.host}:{self.port}{self.path}'
+        return f'{self.scheme}://{self.host}:{self.port}{self.path}'
 
     def __repr__(self):
-        return f'{self.sheme}://{self.host}:{self.port}{self.path}'
+        return f'{self.scheme}://{self.host}:{self.port}{self.path}'

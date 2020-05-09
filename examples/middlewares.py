@@ -57,6 +57,6 @@ app.route(
     '/',
     hello,
     ignore_middlewares=[validation_middleware],
-    middlewares=[response_middleware]
+    middlewares=[response_middleware],
 )
 app.route('/echo', world, ['POST'])

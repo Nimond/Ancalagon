@@ -1,0 +1,28 @@
+name: Python application
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      PIP_DOWNLOAD_CACHE: $HOME/pip
+      POETRY_VIRTUALENVS_CREATE: 'false'
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Cache pip packages
+      uses: actions/cache@v1
+      with:
+        path: $HOME/pip
+        key: poetry-cache-${{ hashFiles('poetry.lock') }}
+    - name: Install dependencies
+      run: |
+        pip install -q poetry==1.0.3
+        poetry install
+    - name: Lint with check_code
+      run: |
+        ./check_code.sh
