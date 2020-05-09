@@ -7,13 +7,13 @@ async def hello(request):
     return JSONResponse({'name': 'Melkor'})
 
 
-async def start(app):
+async def start(application):
     print('starting')
     # do some startup stuff here
     # e.g. connect to database | rabbitmq
 
 
-async def end(app):
+async def end(application):
     print('ending')
     # do some shutdown stuff here
     # e.g. disconnect from database,

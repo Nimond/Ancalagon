@@ -2,7 +2,7 @@ import asyncio
 import pprint
 from functools import partial
 
-prettyformat = pprint.PrettyPrinter(indent=2).pformat
+pretty_format = pprint.PrettyPrinter(indent=2).pformat
 
 
 async def run_in_executor(func, *args, **kwargs):

@@ -55,13 +55,13 @@ async def end(app):
 app = App(
     startup=[start],
     shutdown=[end],
-    middlewares=[info_middleware, validation_middleware]
+    middlewares=[info_middleware, validation_middleware],
 )
 app.route(
     '/',
     hello,
     ignore_middlewares=[validation_middleware],
-    middlewares=[response_middleware]
+    middlewares=[response_middleware],
 )
 app.route('/echo', world, ['POST'])
 
@@ -88,7 +88,7 @@ INFO:     127.0.0.1:59556 - "POST /echo HTTP/1.1" 200 OK  # http :8000/echo name
 [INFO] : PATH : /echo
 [ERROR] : BAD JSON
 [INFO] : RESPONSE : 400
-INFO:     127.0.0.1:59560 - "POST /echo HTTP/1.1" 400 Bad Request  # http POST :8000/echo 
+INFO:     127.0.0.1:59560 - "POST /echo HTTP/1.1" 400 Bad Request  # http POST :8000/echo
 ^CINFO:     Shutting down
 INFO:     Waiting for application shutdown.
 ending
