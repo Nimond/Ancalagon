@@ -1,7 +1,6 @@
 import logging
 
 from .resolver import Resolver
-from .routes import Route
 from .utils import pretty_format, run_func
 
 
@@ -54,4 +53,4 @@ class App:
         Resolver.add_route  shortcut
         """
 
-        self.http.add_route(Route(*args, **kwargs))
+        self.http.add_route(*args, **kwargs)

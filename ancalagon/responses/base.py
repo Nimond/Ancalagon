@@ -15,7 +15,7 @@ class Response:
             }
         )
         await send(
-            {"type": "http.response.body", "body": body,}
+            {"type": "http.response.body", "body": body}
         )
 
     def render_body(self):
