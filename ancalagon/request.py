@@ -34,7 +34,7 @@ class Request:
 
     @property
     def headers(self):
-        if hasattr(self, '_headers'):
+        if not hasattr(self, '_headers'):
             self._headers = CIMultiDict(
                 {h[0].decode(): h[1].decode() for h in self._scope['headers']}
             )
@@ -43,7 +43,7 @@ class Request:
 
     @property
     def query(self):
-        if hasattr(self, '_query'):
+        if not hasattr(self, '_query'):
             query_string = self._scope.get('query_string').decode()
             self._query = MultiDict(
                 {
@@ -85,3 +85,11 @@ class Request:
     @property
     def client(self):
         return self._scope.get('client')
+
+    @property
+    def scheme(self):
+        return self._scope.get('scheme')
+
+    @property
+    def server(self):
+        return self._scope.get('server')

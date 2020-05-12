@@ -10,10 +10,10 @@ jobs:
       POETRY_VIRTUALENVS_CREATE: 'false'
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Python 3.7
+    - name: Set up Python 3.8
       uses: actions/setup-python@v1
       with:
-        python-version: 3.7
+        python-version: 3.8
     - name: Cache pip packages
       uses: actions/cache@v1
       with:
@@ -21,8 +21,15 @@ jobs:
         key: poetry-cache-${{ hashFiles('poetry.lock') }}
     - name: Install dependencies
       run: |
-        pip install -q poetry==1.0.3
+        pip install -q poetry==1.0.3 codecov
         poetry install
     - name: Lint with check_code
       run: |
         ./check_code.sh
+    - name: Run unit tests
+      run: |
+        poetry run pytest -vs --cov=ancalagon
+    - name: Codecov
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev'
+      run: |
+        codecov --token=${{ secrets.CODECOV_TOKEN }}

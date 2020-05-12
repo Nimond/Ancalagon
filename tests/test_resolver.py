@@ -1,3 +1,4 @@
+# pylint: disable=redefined-outer-name
 from collections import defaultdict
 from unittest.mock import AsyncMock, Mock
 
@@ -38,7 +39,7 @@ def scope(path, app):
         'server': ('localhost', 5000),
         'app': app,
         'method': 'GET',
-        'path': path
+        'path': path,
     }
 
 
