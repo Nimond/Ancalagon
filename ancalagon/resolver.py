@@ -3,6 +3,7 @@ from functools import partial
 
 from .request import Request
 from .responses import Response
+from .routes import Route
 
 
 class Resolver:
@@ -31,6 +32,9 @@ class Resolver:
 
         await response(scope, receive, send)
 
-    def add_route(self, route):
+    def add_route(self, *args, **kwargs):
+        print(args)
+        route = Route(*args, **kwargs)
+
         for method in route.methods:
             self.routes[method].append(route)

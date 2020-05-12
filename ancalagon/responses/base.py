@@ -14,9 +14,7 @@ class Response:
                 "headers": [[b"content-type", self.content_type]],
             }
         )
-        await send(
-            {"type": "http.response.body", "body": body,}
-        )
+        await send({"type": "http.response.body", "body": body})
 
     def render_body(self):
         return self.body.encode('utf-8')
