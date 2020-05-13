@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 from unittest.mock import AsyncMock
 
 import pytest

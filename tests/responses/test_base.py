@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 from unittest.mock import AsyncMock, call
 
 import pytest
@@ -39,7 +38,10 @@ async def test_send_response(response):
             {
                 "type": "http.response.start",
                 "status": response.status_code,
-                "headers": [[b"content-type", response.content_type]],
+                "headers": [
+                    [b"content-type", response.content_type],
+                    [b'server', b'Ancalagon'],
+                ],
             }
         ),
         call({"type": "http.response.body", "body": response.render_body()}),
