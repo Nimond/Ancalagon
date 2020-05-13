@@ -1,4 +1,3 @@
-# pylint: disable=redefined-outer-name
 from collections import defaultdict
 from unittest.mock import AsyncMock, Mock
 

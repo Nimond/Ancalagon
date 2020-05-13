@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Ancalagon"
-version = "0.0.2a1"
+version = "0.0.3a0"
 description = "The blackest ASGI framework"
 authors = ["Nimond <dndnomin@gmail.com>"]
 license = "gpl-3.0"
