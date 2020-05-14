@@ -1,7 +1,8 @@
+import asyncio
 from json import JSONDecodeError
 
 from ancalagon import App
-from ancalagon.responses import JSONResponse, Response
+from ancalagon.responses import JSONResponse, Response, StreamResponse
 
 
 async def info_middleware(handler, request):
@@ -44,6 +45,18 @@ async def world(request):
     return Response(f'<h1>Your JSON: </h1> {payload}')
 
 
+async def stream(request):
+    r = StreamResponse(request)
+
+    i = 0
+    while not r.disconnected:
+        await r.write(f'{i}kek\n')
+        await asyncio.sleep(1)
+        i += 1
+
+    return r
+
+
 async def start(app):
     print('starting')
 
@@ -64,6 +77,7 @@ app.route(
     middlewares=[response_middleware],
 )
 app.route('/echo', world, ['POST'])
+app.route('/stream', stream)
 
 
 '''
