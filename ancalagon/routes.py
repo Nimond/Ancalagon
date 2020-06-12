@@ -1,15 +1,18 @@
 import re
+from typing import Awaitable, List
+
+from ancalagon.responses import Response
 
 
 class Route:
     def __init__(
         self,
-        path,
-        handler,
-        methods=['GET'],
-        middlewares=[],
-        ignore_middlewares=[],
-    ):
+        path: str,
+        handler: Awaitable[Response],
+        methods: List[str] = None,
+        middlewares: List[Awaitable[Response]] = None,
+        ignore_middlewares: List[Awaitable[Response]] = None,
+    ) -> None:
         self.path = path
         self.methods = methods
         self.handler = handler

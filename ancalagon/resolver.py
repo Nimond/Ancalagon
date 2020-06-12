@@ -1,16 +1,23 @@
 from collections import defaultdict
 from functools import partial
+from typing import Any
 
-from .request import Request
-from .responses import Response
-from .routes import Route
+import ancalagon.mypy_types as types
+from ancalagon.request import Request
+from ancalagon.responses import Response
+from ancalagon.routes import Route
 
 
 class Resolver:
-    def __init__(self):
+    def __init__(self) -> None:
         self.routes = defaultdict(list)
 
-    async def __call__(self, scope, receive, send):
+    async def __call__(
+        self,
+        scope: types.Scope,
+        receive: types.Receive,
+        send: types.Send,
+    ) -> None:
         scope['request'] = request = Request(scope, receive, send)
 
         app = scope['app']
@@ -32,8 +39,11 @@ class Resolver:
 
         await response(scope, receive, send)
 
-    def add_route(self, *args, **kwargs):
-        print(args)
+    def add_route(
+        self,
+        *args: Any,
+        **kwargs: Any,
+    ) -> None:
         route = Route(*args, **kwargs)
 
         for method in route.methods:
