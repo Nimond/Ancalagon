@@ -1,7 +1,7 @@
 import re
 
 
-class Route:
+class BaseRoute:
     def __init__(
         self,
         path,

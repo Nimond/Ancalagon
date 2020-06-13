@@ -1,7 +1,7 @@
 import logging
 
-from .resolver import Resolver
-from .utils import pretty_format, run_func
+from ancalagon.resolvers import HTTPResolver, WSResolver
+from ancalagon.utils import pretty_format, run_func
 
 
 class App:
@@ -11,7 +11,8 @@ class App:
 
     def __init__(self, debug=False, startup=[], shutdown=[], middlewares=[]):
         self.debug = debug
-        self.http = Resolver()
+        self.http = HTTPResolver()
+        self.ws = WSResolver()
         self.startup = startup
         self.shutdown = shutdown
         self.middlewares = middlewares
@@ -22,13 +23,14 @@ class App:
     async def __call__(self, scope, receive, send):
         self.logger.debug(pretty_format(scope))
 
-        # TODO: ASGI middlewares
         scope['app'] = self
 
         if scope['type'] == 'lifespan':
             await self.lifespan(receive, send)
         elif scope['type'] == 'http':
             await self.http(scope, receive, send)
+        elif scope['type'] == 'websocket':
+            await self.ws(scope, receive, send)
 
     async def lifespan(self, receive, send):
         """
@@ -50,7 +52,14 @@ class App:
 
     def route(self, *args, **kwargs):
         """
-        Resolver.add_route  shortcut
+        HTTPResolver.add_route  shortcut
         """
 
         self.http.add_route(*args, **kwargs)
+
+    def websocket_route(self, *args, **kwargs):
+        """
+        WSResolver.add_route  shortcut
+        """
+
+        self.ws.add_route(*args, **kwargs)

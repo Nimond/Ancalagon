@@ -1,36 +1,15 @@
-import json
-
 from multidict import CIMultiDict, MultiDict
 
-from .url import URL
+from ancalagon.url import URL
 
 
-class Request:
+class BaseRequest:
     def __init__(self, scope, receive, send):
         scope['request'] = self
         self._scope = scope
         self._receive = receive
         self._send = send
         self._url = URL(scope)
-
-    async def body(self):
-        if not hasattr(self, '_body'):
-            chunks = []
-            while True:
-                response = await self._receive()
-                chunks.append(response['body'])
-                if not response.get('more_body'):
-                    break
-
-            self._body = b''.join(chunks)
-
-        return self._body
-
-    async def json(self):
-        if not hasattr(self, '_json'):
-            self._json = json.loads(await self.body())  # FIXME: in executor
-
-        return self._json
 
     @property
     def headers(self):
@@ -57,10 +36,6 @@ class Request:
     @property
     def path_params(self):
         return self._scope.get('path_params', {})
-
-    @property
-    def method(self):
-        return self._scope['method']
 
     @property
     def app(self):

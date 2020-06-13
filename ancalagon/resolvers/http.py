@@ -1,12 +1,12 @@
 from collections import defaultdict
 from functools import partial
 
-from .request import Request
-from .responses import Response
-from .routes import Route
+from ancalagon.requests import Request
+from ancalagon.responses import Response
+from ancalagon.routes import Route
 
 
-class Resolver:
+class HTTPResolver:
     def __init__(self):
         self.routes = defaultdict(list)
 

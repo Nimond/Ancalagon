@@ -1,3 +1,3 @@
-from .base import Response
+from .html import HTMLResponse as Response
 from .json import JSONResponse
 from .stream_response import StreamResponse

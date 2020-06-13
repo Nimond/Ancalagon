@@ -1,9 +1,9 @@
 import json
 
-from .base import Response
+from .base import BaseResponse
 
 
-class JSONResponse(Response):
+class JSONResponse(BaseResponse):
     content_type = b'application/json'
 
     def render_body(self):

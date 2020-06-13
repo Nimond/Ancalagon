@@ -2,8 +2,10 @@ import asyncio
 
 from multidict import CIMultiDict
 
+from .base import BaseResponse
 
-class StreamResponse:
+
+class StreamResponse(BaseResponse):
     content_type = b'application/octet-stream'
 
     def __init__(self, request, status_code=200):
@@ -32,14 +34,7 @@ class StreamResponse:
             {
                 "type": "http.response.start",
                 "status": self.status_code,
-                "headers": [
-                    [b'content-type', self.content_type],
-                    [b'server', b'Ancalagon'],
-                ]
-                + [
-                    [key.encode('utf-8'), value.encode('utf-8')]
-                    for key, value in self.headers.items()
-                ],
+                "headers": self.build_headers(),
             }
         )
 
